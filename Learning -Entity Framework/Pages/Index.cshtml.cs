@@ -7,6 +7,7 @@ using EFDataAccessLibrary.DataAccess;
 using EFDataAccessLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Learning__Entity_Framework.Pages
@@ -25,6 +26,19 @@ namespace Learning__Entity_Framework.Pages
         public void OnGet()
         {
             LoadSampleData();
+
+            var people = _db.People
+                .Include(a => a.Addresses)   // include list with people addresses 
+                .Include(c => c.EmailAddresses) // include list with people email addresses
+                .Where(x => ApprovedAge(x.Age))
+                .ToList();
+
+
+        }
+
+        private bool ApprovedAge(int age)
+        {
+            return(age >= 18 && age <= 65);
         }
 
         private void LoadSampleData()
