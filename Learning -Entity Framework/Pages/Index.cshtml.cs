@@ -30,7 +30,8 @@ namespace Learning__Entity_Framework.Pages
             var people = _db.People
                 .Include(a => a.Addresses)   // include list with people addresses 
                 .Include(c => c.EmailAddresses) // include list with people email addresses
-                .Where(x => ApprovedAge(x.Age))
+              //  .Where(x => ApprovedAge(x.Age)) // has to download all the results first and then filter them using function
+                .Where( x => x.Age >= 18 && x.Age <=65) // better use this way because query is run in database
                 .ToList();
 
 
